@@ -1,14 +1,15 @@
 This project is a custom Gutenberg Block for WordPress. It allows you to select and album from Last.FM and save all of that metadata so you don't have to manually enter it.
 
-Below you will find some information on how to setup and use this plugin in a local enviroment. 
+Below you will find some information on how to setup and use this plugin in a WordPress local enviroment. 
 
 ## 👉  `Install The Plugin`
 - <code>git clone</code> this repository into your <code>/wp-content/plugins</code>. 
 - <code>cd</code> into that directory and run the following in your terminal
-<code>
+- <code>
 npm install
 npm run build
 </code>
+ 
 - If you don't have NPM and Node installed you can learn more about that at <a href="https://www.npmjs.com/get-npm">https://www.npmjs.com/get-npm</a>
 
 ---
