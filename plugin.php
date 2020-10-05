@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: album-review — CGB Gutenberg Block Plugin
+ * Plugin Name: Album Review - A Gutenberg Block
  * Plugin URI: https://github.com/ahmadawais/create-guten-block/
- * Description: album-review — is a Gutenberg plugin created via create-guten-block.
- * Author: mrahmadawais, maedahbatool
+ * Description: Album Review - It's a Gutenberg Block with Last.FM API intergration.
+ * Author: Brian Routzong
  * Author URI: https://AhmadAwais.com/
  * Version: 1.0.0
  * License: GPL2+
