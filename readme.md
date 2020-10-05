@@ -5,7 +5,8 @@ Below you will find some information on how to setup and use this plugin in a Wo
 ## 👉  `Install The Plugin`
 - <code>git clone</code> this repository into your <code>/wp-content/plugins</code>. 
 - <code>cd</code> into that directory and run the following in your terminal
-- <code>npm install <br />npm run build</code>
+- <code>npm install</code>
+- <code>npm run build</code>
 - If you don't have NPM and Node installed you can learn more about that at <a href="https://www.npmjs.com/get-npm">https://www.npmjs.com/get-npm</a>
 
 ---
