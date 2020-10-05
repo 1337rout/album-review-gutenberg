@@ -3,7 +3,8 @@ This project is a custom Gutenberg Block for WordPress. It allows you to select 
 Below you will find some information on how to setup and use this plugin in a WordPress local enviroment. 
 
 ## 👉  `Install The Plugin`
-- <code>git clone</code> this repository into your <code>/wp-content/plugins</code>. 
+- You can download this code as a ZIP from GitHub and install it like a normal plugin or...
+- <code>git clone</code> this repository into your <code>/wp-content/plugins</code>.
 - If you want to poke around and have fun do the following.
 - <code>cd</code> into that directory and run the following in your terminal
 - <code>npm install</code>
