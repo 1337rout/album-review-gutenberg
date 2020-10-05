@@ -1,4 +1,4 @@
-This project is a custom Gutenberg Block for WordPress. It allows you to select and album from Last.FM and save all of that metadata so you don't have to manually enter it.
+This project is a custom Gutenberg Block for WordPress. It allows you to select an album from Last.FM and save all of that metadata so you don't have to manually enter it.
 
 Below you will find some information on how to setup and use this plugin in a WordPress local enviroment. 
 
@@ -16,7 +16,7 @@ Below you will find some information on how to setup and use this plugin in a Wo
 ## 🎶  `Get a Last.FM API Key`
 - Go to <a href="https://www.last.fm/api/account/create">https://www.last.fm/api/account/create</a>. 
 - Either sign-in or sign-up for Last.FM
-- Fill out the Contact email and Appliication name field the rest are not needed.
+- Fill out the Contact email and Application name field the rest are not needed.
 - Click the Submit Button. You will then have your API Key. Save this somewhere important as you won't be able to retrieve it again. (Hint: Save the page CTRL + S and store it somewhere good.).
 
 ---
