@@ -1,1 +1,48 @@
-.album-review,.admin-manual-enter{display:-ms-flexbox;display:flex;-ms-flex-direction:row;flex-direction:row;width:100%;-ms-flex-wrap:wrap;flex-wrap:wrap}.album-details,.admin-album-60{width:60%}.album-cover-cont,.admin-album-40{width:40%;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;-ms-flex-pack:center;justify-content:center;-ms-flex-align:center;align-items:center}h3.album-name-author{margin:0px !important}.star-rating{display:-ms-flexbox;display:flex}.star-rating svg{width:18px;height:18px;color:#ff9900}.star-rating svg:not(:last-child){margin-right:3px}
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+/**
+ * #.# Styles
+ *
+ * CSS for both Frontend+Backend.
+ */
+.album-review, .admin-manual-enter {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+      flex-direction: row;
+  width: 100%;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
+
+.album-details, .admin-album-60 {
+  width: 60%; }
+
+.album-cover-cont, .admin-album-40 {
+  width: 40%;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center; }
+
+h3.album-name-author {
+  margin: 0px !important; }
+
+.star-rating {
+  display: -ms-flexbox;
+  display: flex; }
+
+.star-rating svg {
+  width: 18px;
+  height: 18px;
+  color: #ff9900; }
+
+.star-rating svg:not(:last-child) {
+  margin-right: 3px; }

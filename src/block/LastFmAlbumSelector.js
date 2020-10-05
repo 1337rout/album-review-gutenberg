@@ -16,7 +16,6 @@ width: 100%;
 max-height: 30vh;
 padding: 10px;
 background: white;
-box-shadow: 0 3px 3px rgba(0,0,0,.1);
 overflow: scroll;
 `;
 
@@ -45,8 +44,8 @@ class LastFmAlbumSelector extends React.Component {
     albums: [],
   };
 
-  catchInput = e => {
-    this.setState({ searchTerm: e });
+  catchInput = searchTerm => {
+    this.setState({ searchTerm: searchTerm });
     if(this.timeout) clearTimeout(this.timeout);
     this.timeout = setTimeout(this.doSearch, 500);
   };
@@ -73,12 +72,10 @@ class LastFmAlbumSelector extends React.Component {
       const res = await fetch(`https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=${apiKey}&artist=${item.artist}&album=${item.name}&format=json`)
       const  { album }  = await res.json()
       this.props.onSelect(album);
-      
+      this.setState({ albums: [] });
     } catch(err) {
-      console.log(err);
     }
     
-    this.setState({ albums: [] });
   };
 
 

@@ -85,7 +85,7 @@ function album_review_cgb_block_assets() { // phpcs:ignore
 			'editor_style'  => 'album_review-cgb-block-editor-css',
 			// Render the block on the front end with PHP.
 			'render_callback' => 'render_album_review',
-			//Setup Attributes
+			//Setup Attributes for the Dynamic Function.
 			'attributes' => [
 					'albumTitle' => [
 						'type' => 'string',
@@ -175,7 +175,7 @@ class AlbumReviewSettings {
 
 		add_settings_field(
 			'last_fm_api_key_0', // id
-			'Last.FM Api Key', // title
+			'Last.FM API Key', // title
 			array( $this, 'last_fm_api_key_0_callback' ), // callback
 			'album-review-settings-admin', // page
 			'album_review_settings_setting_section' // section
@@ -205,12 +205,7 @@ class AlbumReviewSettings {
 }
 if ( is_admin() )
 	$album_review_settings = new AlbumReviewSettings();
-
-/* 
- * Retrieve this value with:
- * $album_review_settings_options = get_option( 'album_review_settings_option_name' ); // Array of All Options
- * $last_fm_api_key_0 = $album_review_settings_options['last_fm_api_key_0']; // Last.FM Api Key
- */
+//function to render the Album Review Gutenber Block Dynamically.
 function render_album_review($attributes){
 	ob_start();
 	?>

@@ -15,15 +15,13 @@ import LastFmAlbumSelector from './LastFmAlbumSelector.js';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
-const { TextControl } = wp.components;
-const { ServerSideRender } = wp.editor;
+const { TextControl } = wp.components; // Import TextControl from wp.components
+const { ServerSideRender } = wp.editor; // Import ServerSideRender from wp.editor for Dynamic Preview.
+const apiKey =  cgbGlobal.lastFmApiKey; // Get Our API Key for checks in the Edit Function.
 
 /**
- * Register: aa Gutenberg Block.
+ * Register the Album Review Gutenberg Block.
  *
- * Registers a new block provided a unique name and an object defining its
- * behavior. Once registered, the block is made editor as an option to any
- * editor interface where blocks are implemented.
  *
  * @link https://wordpress.org/gutenberg/handbook/block-api/
  * @param  {string}   name     Block name.
@@ -64,10 +62,7 @@ registerBlockType( 'cgb/block-album-review', {
 	},
 
 	/**
-	 * The edit function describes the structure of your block in the context of the editor.
-	 * This represents what the editor will render when the block is used.
-	 *
-	 * The "edit" property must be a valid function.
+	 * Setting up the edit function. This renders all of the functionality on the admin side of the post to edit and save the block.
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 *
@@ -75,7 +70,7 @@ registerBlockType( 'cgb/block-album-review', {
 	 * @returns {Mixed} JSX Component.
 	 */
 	edit: ( props ) => {
-		// Creates a <p class='wp-block-cgb-block-album-review'></p>.
+		// Setup functions to handle setting attributes on change.
 		const onChangeAlbumTitle = value =>{
 			props.setAttributes( {
 				albumTitle: value
@@ -113,111 +108,104 @@ registerBlockType( 'cgb/block-album-review', {
 			const releaseDate = ('wiki.published' in value) ? value.wiki.published.split(',')[0] : '';
 			props.setAttributes( {
 			albumCoverArtUri: value.image[2]['#text'],
-		   // albumGenre: value,
 			albumArtist: value.artist,
 			albumTitle: value.name,
 			albumGenre: value.tags.tag.map(({name}) => {
 				let genreString ='';
 				genreString = genreString + ' ' + name;
 				return genreString;
-		}),
-			
+			}),
 			albumReleaseDate: releaseDate,
 		  });
 		};
-		
-		
+		//Hide Last.FM Album Selector if API Key not set.
+		let albumChooser;
+		if(apiKey){
+			albumChooser = <LastFmAlbumSelector onSelect={ onLastFmSelect }/>;
+		}
+		else{
+			albumChooser = <h4>Add your Last.FM API Key to use the Album Chooser.<br /><strong>Go to Settings > Album Review Settings</strong></h4>
+		}
+		//Render the Gutenberg Block in admin
 		return (
 			<div className={ props.className }>
-				<LastFmAlbumSelector onSelect={ onLastFmSelect }/>
+				{ albumChooser }
 				<div className="admin-manual-enter">
-				<p className="admin-album-60">
+					<p className="admin-album-60">
 						Album Name
-					<TextControl
-					tagName= "p"
-					placeholder={ __('Album Name') }
-					value={ props.attributes.albumTitle }
-					onChange={ onChangeAlbumTitle }
-					/>
+						<TextControl
+							tagName= "p"
+							placeholder={ __('Album Name') }
+							value={ props.attributes.albumTitle }
+							onChange={ onChangeAlbumTitle }
+						/>
 					</p>
 					<p className="admin-album-40">
 						Album Artist
-					<TextControl
-					tagName= "p"
-					placeholder={ __('Album Artist') }
-					value={ props.attributes.albumArtist }
-					onChange={ onChangeAlbumArtist }
-					/>
+						<TextControl
+							tagName= "p"
+							placeholder={ __('Album Artist') }
+							value={ props.attributes.albumArtist }
+							onChange={ onChangeAlbumArtist }
+						/>
 					</p>
-					<p className="admin-album-60">
+						<p className="admin-album-60">
 						Album Genre
-					<TextControl
-					tagName= "p"
-					placeholder={ __('Album Genre') }
-					value={ props.attributes.albumGenre }
-					onChange={ onChangeAlbumGenre }
-					/>
+						<TextControl
+							tagName= "p"
+							placeholder={ __('Album Genre') }
+							value={ props.attributes.albumGenre }
+							onChange={ onChangeAlbumGenre }
+						/>
 					</p>
 					<p className="admin-album-40">Album Rating
-				<StarRatingComponent
-					name='Album Rating'
-					 
-    				value={props.attributes.albumRating} /* number of selected icon (`0` - none, `1` - first) */
-    				onStarClick={ onChangeAlbumRating } /* on icon click handler */
+						<StarRatingComponent
+							name='Album Rating'
+							
+							value={props.attributes.albumRating} /* number of selected icon (`0` - none, `1` - first) */
+							onStarClick={ onChangeAlbumRating } /* on icon click handler */
 						/>
 					</p>
 					<p className="admin-album-60">
 						Album Cover Art URI
-					<TextControl
-					tagName= "p"
-					placeholder={ __('Album Cover Art URI') }
-					value={ props.attributes.albumCoverArtUri }
-					onChange={ onChangeAlbumCovertArtUri }
-					/>
+						<TextControl
+							tagName= "p"
+							placeholder={ __('Album Cover Art URI') }
+							value={ props.attributes.albumCoverArtUri }
+							onChange={ onChangeAlbumCovertArtUri }
+						/>
 					</p>
 					<p className="admin-album-40">
 						Album Release Date
-					<TextControl
-					tagName= "p"
-					placeholder={ __('Album Release Date') }
-					value={ props.attributes.albumReleaseDate }
-					onChange={ onChangeAlbumReleaseDate }
-					/>
+						<TextControl
+							tagName= "p"
+							placeholder={ __('Album Release Date') }
+							value={ props.attributes.albumReleaseDate }
+							onChange={ onChangeAlbumReleaseDate }
+						/>
 					</p>
-					</div>
-					<p>Front End Preview</p>
-					<ServerSideRender
+				</div>
+				<p>Front End Preview</p>
+				<ServerSideRender
 					block="cgb/block-album-review"
-						attributes={{
-							albumGenre: props.attributes.albumGenre,
-							albumArtist: props.attributes.albumArtist,
-							albumCoverArtUri: props.attributes.albumCoverArtUri,
-							albumTitle: props.attributes.albumTitle,
-							albumRating: props.attributes.albumRating,
-							albumReleaseDate: props.attributes.albumReleaseDate,
-						
-						}}
-		/>
+					attributes={{
+						albumGenre: props.attributes.albumGenre,
+						albumArtist: props.attributes.albumArtist,
+						albumCoverArtUri: props.attributes.albumCoverArtUri,
+						albumTitle: props.attributes.albumTitle,
+						albumRating: props.attributes.albumRating,
+						albumReleaseDate: props.attributes.albumReleaseDate,
 					
-				
+					}}
+				/>
 			</div>
 		);
 	},
 
 	/**
-	 * The save function defines the way in which the different attributes should be combined
-	 * into the final markup, which is then serialized by Gutenberg into post_content.
-	 *
-	 * The "save" property must be specified and must be a valid function.
-	 *
-	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-	 *
-	 * @param {Object} props Props.
-	 * @returns {Mixed} JSX Frontend HTML.
+	 * Return null on the save function as we are dynamically rendering the blocks with PHP.
 	 */
 	save: ( props ) => {
-		
-		
 		return null
 	},
 } );
