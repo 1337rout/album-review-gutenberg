@@ -1,0 +1,16 @@
+{
+  "name": "album-review-cgb-guten-block",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cgb-scripts start",
+    "build": "cgb-scripts build",
+    "eject": "cgb-scripts eject"
+  },
+  "dependencies": {
+    "cgb-scripts": "1.23.1",
+    "react-star-rating-component": "^1.4.1",
+    "styled": "^1.0.0",
+    "styled-components": "^5.2.0"
+  }
+}

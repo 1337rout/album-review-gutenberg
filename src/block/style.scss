@@ -1,0 +1,38 @@
+/**
+ * #.# Styles
+ *
+ * CSS for both Frontend+Backend.
+ */
+
+
+.album-review, .admin-manual-enter {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.album-details, .admin-album-60 {
+  width: 60%;
+}
+.album-cover-cont, .admin-album-40 {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+h3.album-name-author {
+  margin: 0px!important;
+}
+.star-rating {
+  display: flex;
+}
+.star-rating svg {
+  width: 18px;
+  height: 18px;
+  color: #ff9900;
+}
+
+.star-rating svg:not(:last-child) {
+  margin-right: 3px;
+}
