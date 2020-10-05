@@ -105,7 +105,7 @@ registerBlockType( 'cgb/block-album-review', {
 		
 		const onLastFmSelect = value =>{
 			console.log(value);
-			const releaseDate = ('wiki.published' in value) ? value.wiki.published.split(',')[0] : '';
+			const releaseDate = ('wiki' in value) ? value.wiki.published.split(',')[0] : '';
 			props.setAttributes( {
 			albumCoverArtUri: value.image[2]['#text'],
 			albumArtist: value.artist,
