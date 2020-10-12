@@ -224,7 +224,7 @@ function render_album_review($attributes){
 			<?php endif; 
 			$i = 0
 			?>
-			<p class="album-genre"><?php echo join(', ', wp_list_pluck( $attributes['albumGenre'], 'name')); ?></p>
+			<p class="album-genre"><?php echo join(', ', $attributes['albumGenre']); ?></p>
 			<div class="album-rating">
 		<?php
 			$rating = $attributes['albumRating'];
