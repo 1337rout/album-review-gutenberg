@@ -110,11 +110,7 @@ registerBlockType( 'cgb/block-album-review', {
 			albumCoverArtUri: value.image[2]['#text'],
 			albumArtist: value.artist,
 			albumTitle: value.name,
-			albumGenre: value.tags.tag.map(({name}) => {
-				let genreString ='';
-				genreString = genreString + ' ' + name;
-				return genreString;
-			}),
+			albumGenre: value.tags.tag.join(', '),
 			albumReleaseDate: releaseDate,
 		  });
 		};
