@@ -224,14 +224,7 @@ function render_album_review($attributes){
 			<?php endif; 
 			$i = 0
 			?>
-			<p class="album-genre"><?php foreach( $attributes['albumGenre'] as $genre){
-				$i++;
-				if($i< count($attributes['albumGenre'])){
-					echo $genre.', ';
-				}else{
-					echo $genre;
-				}
-			}; ?></p>
+			<p class="album-genre"><?php echo join(', ', wp_list_pluck( $attributes['albumGenre'], 'name')); ?></p>
 			<div class="album-rating">
 		<?php
 			$rating = $attributes['albumRating'];
