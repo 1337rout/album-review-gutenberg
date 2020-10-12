@@ -222,7 +222,6 @@ function render_album_review($attributes){
 			<?php if(!empty($attributes['albumReleaseDate'])): ?>
 			<p class="album-release-date">Released: <?php echo $attributes['albumReleaseDate']; ?></p>
 			<?php endif; 
-			$i = 0
 			?>
 			<p class="album-genre"><?php echo join(', ', $attributes['albumGenre']); ?></p>
 			<div class="album-rating">
