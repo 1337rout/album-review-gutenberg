@@ -6,18 +6,17 @@
  */
 
 //  Import CSS.
-import './editor.scss';
-import './style.scss';
-import React from 'react';
-import styled from 'styled-components'
-import StarRatingComponent from 'react-star-rating-component';
-import LastFmAlbumSelector from './LastFmAlbumSelector.js';
+import "./editor.scss";
+import "./style.scss";
+import React from "react";
+import Rating from '@mui/material/Rating';
+import LastFmAlbumSelector from "./LastFmAlbumSelector.js";
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 const { TextControl } = wp.components; // Import TextControl from wp.components
 const { ServerSideRender } = wp.editor; // Import ServerSideRender from wp.editor for Dynamic Preview.
-const apiKey =  cgbGlobal.lastFmApiKey; // Get Our API Key for checks in the Edit Function.
+const apiKey = cgbGlobal.lastFmApiKey; // Get Our API Key for checks in the Edit Function.
 
 /**
  * Register the Album Review Gutenberg Block.
@@ -29,35 +28,31 @@ const apiKey =  cgbGlobal.lastFmApiKey; // Get Our API Key for checks in the Edi
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'cgb/block-album-review', {
+registerBlockType("cgb/block-album-review", {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __( 'Album Review' ), // Block title.
-	icon: 'album', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: 'media', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-	keywords: [
-		__( 'Music' ),
-		__( 'Album' ),
-		__( 'Review' ),
-	],
+	title: __("Album Review"), // Block title.
+	icon: "album", // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+	category: "media", // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	keywords: [__("Music"), __("Album"), __("Review")],
 	attributes: {
 		albumTitle: {
-			type: 'string',
+			type: "string",
 		},
 		albumArtist: {
-			type: 'string',
+			type: "string",
 		},
 		albumGenre: {
-			type: 'array',
+			type: "array",
 		},
 		albumRating: {
-			type: 'number',
-			default:  3 ,
+			type: "number",
+			default: 3,
 		},
 		albumCoverArtUri: {
-			type: 'string',
+			type: "string",
 		},
 		albumReleaseDate: {
-			type: 'string',
+			type: "string",
 		},
 	},
 
@@ -69,117 +64,118 @@ registerBlockType( 'cgb/block-album-review', {
 	 * @param {Object} props Props.
 	 * @returns {Mixed} JSX Component.
 	 */
-	edit: ( props ) => {
+	edit: (props) => {
 		// Setup functions to handle setting attributes on change.
-		const onChangeAlbumTitle = value =>{
-			props.setAttributes( {
-				albumTitle: value
-			});
-		
-		};
-		const onChangeAlbumArtist = value =>{
-			props.setAttributes( {
-				albumArtist: value
+		const onChangeAlbumTitle = (value) => {
+			props.setAttributes({
+				albumTitle: value.split(","),
 			});
 		};
-		const onChangeAlbumGenre = value =>{
-			props.setAttributes( {
-				albumGenre: value
+		const onChangeAlbumArtist = (value) => {
+			props.setAttributes({
+				albumArtist: value,
 			});
 		};
-		const onChangeAlbumRating = value =>{
-			props.setAttributes( {
-				albumRating: value
+		const onChangeAlbumGenre = (value) => {
+			props.setAttributes({
+				albumGenre: value,
 			});
 		};
-		const onChangeAlbumCovertArtUri = value =>{
-			props.setAttributes( {
-				albumCoverArtUri: value
-			});
-		}; 
-		const onChangeAlbumReleaseDate = value =>{
-			props.setAttributes( {
-				albumReleaseDate: value
+		const onChangeAlbumRating = (_event, value) => {
+			props.setAttributes({
+				albumRating: value,
 			});
 		};
-		
-		const onLastFmSelect = value =>{
-			console.log(value);
-			const releaseDate = ('wiki' in value) ? value.wiki.published.split(',')[0] : '';
-			props.setAttributes( {
-			albumCoverArtUri: value.image[2]['#text'],
-			albumArtist: value.artist,
-			albumTitle: value.name,
-			albumGenre: value.tags.tag.join(', '),
-			albumReleaseDate: releaseDate,
-		  });
+		const onChangeAlbumCovertArtUri = (value) => {
+			props.setAttributes({
+				albumCoverArtUri: value,
+			});
+		};
+		const onChangeAlbumReleaseDate = (value) => {
+			props.setAttributes({
+				albumReleaseDate: value,
+			});
+		};
+
+		const onLastFmSelect = (value) => {
+			const releaseDate =
+				"wiki" in value ? value.wiki.published.split(",")[0] : "";
+			props.setAttributes({
+				albumCoverArtUri: value.image[2]["#text"],
+				albumArtist: value.artist,
+				albumTitle: value.name,
+				albumGenre: value.tags.tag.map((tag) => tag.name),
+				albumReleaseDate: releaseDate,
+			});
 		};
 		//Hide Last.FM Album Selector if API Key not set.
 		let albumChooser;
-		if(apiKey){
-			albumChooser = <LastFmAlbumSelector onSelect={ onLastFmSelect }/>;
-		}
-		else{
-			albumChooser = <h4>Add your Last.FM API Key to use the Album Chooser.<br /><strong>Go to Settings > Album Review Settings</strong></h4>
+		if (apiKey) {
+			albumChooser = <LastFmAlbumSelector onSelect={onLastFmSelect} />;
+		} else {
+			albumChooser = (
+				<h4>
+					Add your Last.FM API Key to use the Album Chooser.
+					<br />
+					<strong>{`Go to Settings > Album Review Settings`}</strong>
+				</h4>
+			);
 		}
 		//Render the Gutenberg Block in admin
 		return (
-			<div className={ props.className }>
-				{ albumChooser }
+			<div className={props.className}>
+				{albumChooser}
 				<div className="admin-manual-enter">
-					<p className="admin-album-60">
+					<div className="admin-album-60">
 						Album Name
 						<TextControl
-							tagName= "p"
-							placeholder={ __('Album Name') }
-							value={ props.attributes.albumTitle }
-							onChange={ onChangeAlbumTitle }
+							placeholder={__("Album Name")}
+							value={props.attributes.albumTitle}
+							onChange={onChangeAlbumTitle}
 						/>
-					</p>
-					<p className="admin-album-40">
+					</div>
+					<div className="admin-album-40">
 						Album Artist
 						<TextControl
-							tagName= "p"
-							placeholder={ __('Album Artist') }
-							value={ props.attributes.albumArtist }
-							onChange={ onChangeAlbumArtist }
+							placeholder={__("Album Artist")}
+							value={props.attributes.albumArtist}
+							onChange={onChangeAlbumArtist}
 						/>
-					</p>
-						<p className="admin-album-60">
-						Album Genre
+					</div>
+					<div className="admin-album-60">
+						Album Genre (comma separated)
 						<TextControl
-							tagName= "p"
-							placeholder={ __('Album Genre') }
-							value={ props.attributes.albumGenre }
-							onChange={ onChangeAlbumGenre }
+							placeholder={__("Album Genre")}
+							value={props.attributes.albumGenre}
+							onChange={onChangeAlbumGenre}
 						/>
-					</p>
-					<p className="admin-album-40">Album Rating
-						<StarRatingComponent
-							name='Album Rating'
-							
-							value={props.attributes.albumRating} /* number of selected icon (`0` - none, `1` - first) */
-							onStarClick={ onChangeAlbumRating } /* on icon click handler */
+					</div>
+					<div className="admin-album-40">
+						Album Rating
+						<Rating
+							name="Album Rating"
+							value={
+								props.attributes.albumRating
+							} /* number of selected icon (`0` - none, `1` - first) */
+							onChange={onChangeAlbumRating} /* on icon click handler */
 						/>
-					</p>
-					<p className="admin-album-60">
+					</div>
+					<div className="admin-album-60">
 						Album Cover Art URI
 						<TextControl
-							tagName= "p"
-							placeholder={ __('Album Cover Art URI') }
-							value={ props.attributes.albumCoverArtUri }
-							onChange={ onChangeAlbumCovertArtUri }
+							placeholder={__("Album Cover Art URI")}
+							value={props.attributes.albumCoverArtUri}
+							onChange={onChangeAlbumCovertArtUri}
 						/>
-					</p>
-					<p className="admin-album-40">
+					</div>
+					<div className="admin-album-40">
 						Album Release Date
 						<TextControl
-							tagName= "p"
-							placeholder={ __('Album Release Date') }
-							value={ props.attributes.albumReleaseDate }
-							onChange={ onChangeAlbumReleaseDate }
+							placeholder={__("Album Release Date")}
+							value={props.attributes.albumReleaseDate}
+							onChange={onChangeAlbumReleaseDate}
 						/>
-					</p>
+					</div>
 				</div>
 				<p>Front End Preview</p>
 				<ServerSideRender
@@ -191,7 +187,6 @@ registerBlockType( 'cgb/block-album-review', {
 						albumTitle: props.attributes.albumTitle,
 						albumRating: props.attributes.albumRating,
 						albumReleaseDate: props.attributes.albumReleaseDate,
-					
 					}}
 				/>
 			</div>
@@ -201,7 +196,7 @@ registerBlockType( 'cgb/block-album-review', {
 	/**
 	 * Return null on the save function as we are dynamically rendering the blocks with PHP.
 	 */
-	save: ( props ) => {
-		return null
+	save: (props) => {
+		return null;
 	},
-} );
+});

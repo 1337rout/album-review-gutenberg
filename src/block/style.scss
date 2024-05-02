@@ -10,12 +10,13 @@
   flex-direction: row;
   width: 100%;
   flex-wrap: wrap;
+  gap: 1rem;
 }
 .album-details, .admin-album-60 {
-  width: 60%;
+  width: calc(60% - 0.5rem);
 }
 .album-cover-cont, .admin-album-40 {
-  width: 40%;
+  width: calc(40% - 0.5rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,11 +29,11 @@ h3.album-name-author {
   display: flex;
 }
 .star-rating svg {
-  width: 18px;
-  height: 18px;
+  width: 1rem;
+  height: 1rem;
   color: #ff9900;
 }
 
 .star-rating svg:not(:last-child) {
-  margin-right: 3px;
+  margin-right: 0.2rem;
 }

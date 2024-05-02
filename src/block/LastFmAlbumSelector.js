@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-const { TextControl } = wp.components;
+import { TextControl } from '@wordpress/components';
 
 const apiKey =  cgbGlobal.lastFmApiKey ;
 
@@ -17,6 +17,7 @@ max-height: 30vh;
 padding: 10px;
 background: white;
 overflow: scroll;
+z-index: 99;
 `;
 
 const LastFmAlbum = styled.div`
@@ -38,21 +39,26 @@ border-bottom: 1px solid #f1f1f1;
 `;
 
 
-class LastFmAlbumSelector extends React.Component {
-  state = {
-    searchTerm: '',
-    albums: [],
+const LastFmAlbumSelector = ({onSelect}) => {
+
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [albums, setAlbums] = React.useState([]);
+  const [timerId, setTimerId] = React.useState(null);
+
+  const catchInput = (term) => {
+    setSearchTerm(term);
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+
+    setTimerId(setTimeout(() => {
+      doSearch();
+    }, 500));
   };
 
-  catchInput = searchTerm => {
-    this.setState({ searchTerm: searchTerm });
-    if(this.timeout) clearTimeout(this.timeout);
-    this.timeout = setTimeout(this.doSearch, 500);
-  };
-
-  doSearch = async () => {
+  const doSearch = async () => {
     try {
-      const res = await fetch(`https://ws.audioscrobbler.com/2.0/?method=album.search&album=${this.state.searchTerm}&api_key=${apiKey}&format=json`)
+      const res = await fetch(`https://ws.audioscrobbler.com/2.0/?method=album.search&album=${searchTerm}&api_key=${apiKey}&format=json`)
       const jsonRes  = await res.json();
       const { albummatches } = jsonRes.results;
       const albums = albummatches.album.map(({name, artist, image}) =>{
@@ -62,34 +68,36 @@ class LastFmAlbumSelector extends React.Component {
         normilizedAlbums['thumbnailUri'] = image[2]['#text'];
         return normilizedAlbums;
       });
-      this.setState({ albums: albums });
+      setAlbums(albums);
     } catch(err) {
+      console.error(err);
     }
   };
 
-  doSelect = async item => {
+  const doSelect = async item => {
     try {
       const res = await fetch(`https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=${apiKey}&artist=${item.artist}&album=${item.name}&format=json`)
       const  { album }  = await res.json()
-      this.props.onSelect(album);
-      this.setState({ albums: [] });
+      onSelect(album);
+      setAlbums([]);
     } catch(err) {
+      console.error(err);
     }
     
   };
 
 
-  render = () => (
+  return (
     <Container>
       <TextControl
         placeholder="Search for Albums on Last.FM"
-        value={this.state.value}
-        onChange={this.catchInput}
+        value={searchTerm}
+        onChange={(e) => catchInput(e)}
       />
-      {this.state.albums.length > 0 && (
+      {albums.length > 0 && (
         <Select>
-          {this.state.albums.map(item => (
-            <LastFmAlbum role="button" onClick={() => this.doSelect(item)}>
+          {albums.map(item => (
+            <LastFmAlbum role="button" onClick={() => doSelect(item)} key={`${item.name}${item.artist}`}>
               <AlbumImage src={item.thumbnailUri} />
               <AlbumInfo>
                 <strong>{item.name}</strong>

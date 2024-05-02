@@ -1,16 +1,18 @@
 {
-  "name": "album-review-cgb-guten-block",
+  "name": "album-review-guten-block",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "cgb-scripts start",
-    "build": "cgb-scripts build",
-    "eject": "cgb-scripts eject"
+    "start": "wp-scripts start",
+    "build": "wp-scripts build",
+    "eject": "wp-scripts eject"
   },
   "dependencies": {
-    "cgb-scripts": "1.23.1",
-    "react-star-rating-component": "^1.4.1",
-    "styled": "^1.0.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.15",
+    "@wordpress/components": "^27.4.0",
+    "@wordpress/scripts": "^27.7.0",
     "styled-components": "^5.2.0"
   }
 }
